@@ -2,15 +2,23 @@
  * Extend the base Actor entity by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}
  */
-export class KnaveActor extends Actor {
+export class VaarnActor extends Actor {
   /**
    * Augment the basic actor data with additional dynamic data.
    */
   prepareData() {
     super.prepareData();
 
+  }
+
+  prepareBaseDate() {
+
+  }
+
+  prepareDerivedData() {
+
     const data = this.system;
-    const flags = this.flags;
+    const flags = this.flags.vaarn || {};
 
     // Make separate methods for each Actor type (character, npc, etc.) to keep
     // things organized.

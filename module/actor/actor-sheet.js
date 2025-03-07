@@ -4,13 +4,13 @@ import { alternateRolls } from "../settings.js";
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
-export class KnaveActorSheet extends ActorSheet {
+export class VaarnActorSheet extends ActorSheet {
   #_hitTargets = new Set();
 
   /** @override */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
-      classes: ["knave", "sheet", "actor"],
+    return foundry.utils.mergeObject(super.defaultOptions, {
+      classes: ["vaarn", "sheet", "actor"],
       template: "systems/vaultsofvaarn/templates/actor/actor-sheet.html",
       width: 1000,
       height: 620,
@@ -18,19 +18,18 @@ export class KnaveActorSheet extends ActorSheet {
         {
           navSelector: ".description-tabs",
           contentSelector: ".description-tabs-content",
-          initial: "description",
-        },
-      ],
+          initial: "description"
+        }
+      ]
     });
   }
 
   /* -------------------------------------------- */
 
   /** @override */
-
-  getData() {
-    let sheet = super.getData();
-    return sheet;
+  async getData() {
+    const context = super.getData();
+    return context;
   }
 
   /** @override */
@@ -41,27 +40,27 @@ export class KnaveActorSheet extends ActorSheet {
     if (!this.options.editable) return;
 
     // Add Inventory Item
-    html.find(".item-create").click(this._onItemCreate.bind(this));
+    html.on('click', '.item-create', this._onItemCreate.bind(this));
 
     //ability button clicked
-    html.find(".knave-ability-button").click((ev) => {
+    html.on('click', ".vaarn-ability-button", (ev) => {
       this._onAbility_Clicked($(ev.currentTarget)[0].id);
     });
-    html.find(".knave-morale-button").click(this._onMoraleCheck.bind(this));
-    html.find(".knave-armor-button").click(this._onArmorCheck.bind(this));
-    html.find(".knave-short-rest-button").click(this._shortRest.bind(this));
-    html.find(".knave-long-rest-button").click(this._longRest.bind(this));
-    html.find(".knave-wounded-button").click(this._wounded.bind(this));
+    html.on('click', '.vaarn-morale-button', this._onMoraleCheck.bind(this));
+    html.on('click', ".vaarn-armor-button", this._onArmorCheck.bind(this));
+    html.on('click', ".vaarn-short-rest-button", this._shortRest.bind(this));
+    html.on('click', ".vaarn-long-rest-button", this._longRest.bind(this));
+    html.on('click', ".vaarn-wounded-button", this._wounded.bind(this));
 
     // Update Inventory Item
-    html.find(".item-edit").click((ev) => {
+    html.on('click', ".item-edit", (ev) => {
       const li = $(ev.currentTarget).parents(".item");
       const item = this.actor.items.get(li.data("itemId"));
       item.sheet.render(true);
     });
 
     // Delete Inventory Item
-    html.find(".item-delete").click((ev) => {
+    html.on('click', ".item-delete", (ev) => {
       const button = ev.currentTarget;
       const li = button.closest(".item");
       const item = this.actor.items.get(li?.dataset.itemId);
@@ -69,18 +68,18 @@ export class KnaveActorSheet extends ActorSheet {
     });
 
     //inventory weapon rolls
-    html.find(".item-roll").click((ev) => {
+    html.on('click', ".item-roll", (ev) => {
       const li = $(ev.currentTarget).parents(".item");
       const item = this.actor.items.get(li.data("itemId"));
       this._onItemRoll(item, ev.currentTarget);
     });
-    html.find(".item-control.item-add").click((ev) => {
+    html.on('click', ".item-control.item-add", (ev) => {
       const button = ev.currentTarget;
       const li = button.closest(".item");
       const item = this.actor.items.get(li?.dataset.itemId);
       item.update({ ["data.quantity"]: item.system.quantity + 1 });
     });
-    html.find(".item-control.item-remove").click((ev) => {
+    html.on('click', ".item-control.item-remove", (ev) => {
       const button = ev.currentTarget;
       const li = button.closest(".item");
       const item = this.actor.items.get(li?.dataset.itemId);
@@ -108,7 +107,7 @@ export class KnaveActorSheet extends ActorSheet {
     const itemData = {
       name: name,
       type: type,
-      data: data,
+      data: data
     };
     // Remove the type from the dataset since it's in the itemData.type prop.
     delete itemData.data["type"];
@@ -117,7 +116,7 @@ export class KnaveActorSheet extends ActorSheet {
     return cls.create(itemData, { parent: this.actor });
   }
 
-  _onAbility_Clicked(ability, additional = null) {
+  async _onAbility_Clicked(ability, additional = null) {
     let score = 0;
     let name = "";
     var diceToRoll = alternateRolls() ? "2d10" : "1d20";
@@ -160,17 +159,18 @@ export class KnaveActorSheet extends ActorSheet {
     }
 
     let formula = `${diceToRoll}+${score}`;
+    console.log(formula);
     let r = new Roll(formula);
-    r.evaluate({ async: false });
+    await r.evaluate();
 
     let returnCode = 0;
     let messageHeader = "<b>" + name + "</b>";
     if (r.dice[0].total <= critFail)
       messageHeader +=
-        ' - <span class="knave-ability-crit knave-ability-critFailure">CRITICAL FAILURE!</span>';
+        ' - <span class="vaarn-ability-crit vaarn-ability-critFailure">CRITICAL FAILURE!</span>';
     else if (r.dice[0].total >= critSuccess)
       messageHeader +=
-        ' - <span class="knave-ability-crit knave-ability-critSuccess">CRITICAL SUCCESS!</span>';
+        ' - <span class="vaarn-ability-crit vaarn-ability-critSuccess">CRITICAL SUCCESS!</span>';
 
     r.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
@@ -186,39 +186,39 @@ export class KnaveActorSheet extends ActorSheet {
     console.log(event);
   }
 
-  _onMoraleCheck(event) {
+  async _onMoraleCheck(event) {
     event.preventDefault();
 
     let r = new Roll(`2d6`);
-    r.evaluate({ async: false });
+    await r.evaluate();
 
     let messageHeader = "";
     if (r.dice[0].total > this.object.system.morale.value)
       messageHeader +=
-        '<span class="knave-ability-crit knave-ability-critFailure">Is fleeing</span>';
+        '<span class="vaarn-ability-crit vaarn-ability-critFailure">Is fleeing</span>';
     else
       messageHeader +=
-        '<span class="knave-ability-crit knave-ability-critSuccess">Is staying</span>';
+        '<span class="vaarn-ability-crit vaarn-ability-critSuccess">Is staying</span>';
     r.toMessage({ flavor: messageHeader });
   }
 
-  _onArmorCheck(event) {
+  async _onArmorCheck(event) {
     let name = "ARMOR";
     let score = this.object.system.armor.bonus;
     event.preventDefault();
 
     let formula = `1d20+${score}`;
     let r = new Roll(formula);
-    r.evaluate({ async: false });
+    await r.evaluate();
 
     let returnCode = 0;
     let messageHeader = "<b>" + name + "</b>";
     if (r.dice[0].total === 1)
       messageHeader +=
-        ' - <span class="knave-ability-crit knave-ability-critFailure">CRITICAL FAILURE!</span>';
+        ' - <span class="vaarn-ability-crit vaarn-ability-critFailure">CRITICAL FAILURE!</span>';
     else if (r.dice[0].total === 20)
       messageHeader +=
-        ' - <span class="knave-ability-crit knave-ability-critSuccess">CRITICAL SUCCESS!</span>';
+        ' - <span class="vaarn-ability-crit vaarn-ability-critSuccess">CRITICAL SUCCESS!</span>';
 
     r.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
@@ -227,7 +227,7 @@ export class KnaveActorSheet extends ActorSheet {
     return r;
   }
 
-  _onItemRoll(item, eventTarget) {
+  async _onItemRoll(item, eventTarget) {
     if (eventTarget.title === "attack") {
       if (item.type === "weaponMelee") {
         const roll = this._onAbility_Clicked(
@@ -241,7 +241,7 @@ export class KnaveActorSheet extends ActorSheet {
       }
     } else if (eventTarget.title === "damage") {
       let r = new Roll(item.system.damageDice);
-      r.evaluate({ async: false });
+      await r.evaluate();
       let messageHeader = "<b>" + item.name + "</b> damage";
       r.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
@@ -318,11 +318,11 @@ export class KnaveActorSheet extends ActorSheet {
 
     token.actor.update({ "system.health.value": newHP });
   }
-  _shortRest(event) {
+  async _shortRest(event) {
     const conBonus = this.object.system.abilities.con.value;
     let formula = `1d8+${conBonus}`;
     let r = new Roll(formula);
-    r.evaluate({ async: false });
+    await r.evaluate();
     this.object.update({
       "system.health.value": r.total + this.object.system.health.value,
     });
@@ -371,7 +371,7 @@ export class KnaveActorSheet extends ActorSheet {
     const itemData = {
       name: randomWound.name,
       type: randomWound.type,
-      data: randomWound.data,
+      system: randomWound.system,
       img: randomWound.img,
     };
     ChatMessage.create({

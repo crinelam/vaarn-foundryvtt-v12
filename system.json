@@ -2,13 +2,24 @@
   "id": "vaultsofvaarn",
   "title": "Vaults of Vaarn",
   "description": "Vaults of Vaarn is a rules toolkit and setting created by Leo Hunt for exploring a post apocalyptic, near earth wasteland.",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "compatibility": {
-    "minimum": "10",
-    "verified": "10.291"
+    "minimum": "12",
+    "verified": "12.331"
   },
-  "esmodules": ["module/knave.js"],
-  "styles": ["css/knave.css"],
+  "authors": [
+    {
+      "name": "omniczech"
+    },
+    {
+      "name": "crinelam",
+      "url": "crinelam.neocities.org",
+      "email": "crinelam@tutamail.com",
+      "discord": "crinelam"
+    }
+  ],
+  "esmodules": ["module/vaarn.js"],
+  "styles": ["styles/vaarn.css"],
   "packs": [
     {
       "name": "armor",
@@ -16,8 +27,7 @@
       "system": "vaultsofvaarn",
       "path": "packs/armor.db",
       "type": "Item",
-      "private": false,
-      "flags": {}
+      "private": false
     },
     {
       "name": "clothing",
@@ -25,8 +35,7 @@
       "system": "vaultsofvaarn",
       "path": "packs/clothing.db",
       "type": "Item",
-      "private": false,
-      "flags": {}
+      "private": false
     },
     {
       "name": "exotica",
@@ -34,8 +43,7 @@
       "system": "vaultsofvaarn",
       "path": "packs/exotica.db",
       "type": "Item",
-      "private": false,
-      "flags": {}
+      "private": false
     },
     {
       "name": "food",
@@ -43,8 +51,7 @@
       "system": "vaultsofvaarn",
       "path": "packs/food.db",
       "type": "Item",
-      "private": false,
-      "flags": {}
+      "private": false
     },
     {
       "name": "items",
@@ -52,8 +59,7 @@
       "system": "vaultsofvaarn",
       "path": "packs/items.db",
       "type": "Item",
-      "private": false,
-      "flags": {}
+      "private": false
     },
     {
       "name": "mysticGifts",
@@ -61,8 +67,7 @@
       "system": "vaultsofvaarn",
       "path": "packs/mysticGifts.db",
       "type": "Item",
-      "private": false,
-      "flags": {}
+      "private": false
     },
     {
       "name": "weapons",
@@ -70,8 +75,7 @@
       "system": "vaultsofvaarn",
       "path": "packs/weapons.db",
       "type": "Item",
-      "private": false,
-      "flags": {}
+      "private": false
     },
     {
       "name": "wounds",
@@ -79,8 +83,7 @@
       "system": "vaultsofvaarn",
       "path": "packs/wounds.db",
       "type": "Item",
-      "private": false,
-      "flags": {}
+      "private": false
     },
     {
       "name": "foes",
@@ -88,8 +91,7 @@
       "system": "vaultsofvaarn",
       "path": "packs/foes.db",
       "type": "Actor",
-      "private": false,
-      "flags": {}
+      "private": false
     }
   ],
   "languages": [
@@ -99,17 +101,14 @@
       "path": "lang/en.json"
     }
   ],
-  "gridDistance": 5,
-  "gridUnits": "ft",
-  "primaryTokenAttribute": "health",
+  "initiative": "1d20",
+  "grid": {
+    "distance": 5,
+    "units": "ft"
+  },
+  "primaryTokenAttribute": "resources.health",
   "url": "https://github.com/omniczech/vaultsofvaarn",
   "manifest": "https://raw.githubusercontent.com/omniczech/vaarn-foundryvtt/main/system.json",
-  "download": "https://github.com/omniczech/vaarn-foundryvtt/archive/refs/tags/0.0.16.zip",
-  "license": "LICENSE.txt",
-  "authors": [
-    {
-      "name": "omniczech",
-      "flags": {}
-    }
-  ]
+  "download": "https://github.com/omniczech/vaarn-foundryvtt/archive/refs/tags/0.0.17.zip",
+  "license": "LICENSE.txt"
 }

@@ -39,9 +39,9 @@
                           <span class="resource-label center">HP:</span>
                           <input type="text" name="system.health.value" value="{{data.system.health.value}}" data-dtype="Number"/>/
                           <input type="text" name="system.health.max" value="{{data.system.health.max}}" data-dtype="Number"/>
-                          <button class="knave-short-rest-button resource-label armor" type="button" >SHORT REST</button>
-                          <button class="knave-long-rest-button resource-label armor" type="button" >LONG REST</button>
-                          <button class="knave-wounded-button resource-label armor" type="button" >WOUNDED</button>
+                          <button class="vaarn-short-rest-button resource-label armor" type="button" >SHORT REST</button>
+                          <button class="vaarn-long-rest-button resource-label armor" type="button" >LONG REST</button>
+                          <button class="vaarn-wounded-button resource-label armor" type="button" >WOUNDED</button>
                       </div>
                     </div>
                     <div>
@@ -50,7 +50,7 @@
                           <span class="resource-label">DEFENSE</span><span class="resource-label">ABILITY</span><span class="resource-label">BONUS</span><span class="resource-label">DEFENSE</span><span class="resource-label">ABILITY</span><span class="resource-label">BONUS</span>
                           {{#each data.system.abilities as |ability key|}}
                           <span class="ability-mod">{{numberFormat ability.defense decimals=0 sign=false}}</span>
-                          <button class="knave-ability-button resource-label {{key}}" type="button" id="{{key}}">{{key}}</button>
+                          <button class="vaarn-ability-button resource-label {{key}}" type="button" id="{{key}}">{{key}}</button>
                           <input type="text" name="system.abilities.{{key}}.value" value="{{ability.value}}" data-dtype="Number" maxlength="2" max="10" min="-10"/>
                           {{/each}}
                        </div>
@@ -68,8 +68,8 @@
         <section class="description-tabs-content align-left">
            {{!-- Description Tab --}}
            <div class="tab" data-group="primary" data-tab="description">
-              <div class="description-editor knave-character-description">
-                 {{editor content=data.system.biography target="system.biography" button=true owner=owner editable=editable}}
+              <div class="description-editor vaarn-character-description">
+                 {{editor data.system.biography target="system.biography" button=true owner=owner editable=editable}}
               </div>
            </div>
            {{!-- Combat Tab --}}
@@ -85,7 +85,7 @@
                     <div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/></div>
                     <div class="item-image item-roll" title="attack"><button type="button">Attack</button></div>
                     <div class="item-image item-roll" title="damage"><button type="button">Damage</button></div>
-                    <h4 class="item-name {{#if (isItemBroken item)}}knave-encumbered{{/if}}">{{item.name}}</h4>
+                    <h4 class="item-name {{#if (isItemBroken item)}}vaarn-encumbered{{/if}}">{{item.name}}</h4>
                     </span>
                  </li>
                  {{/if}}
@@ -105,7 +105,7 @@
                   {{#each actor.items as |item id|}}
                   <li class="item flexrow" data-item-id="{{item.id}}">
                      <div class="item-image"><img src="{{item.img}}" title="{{item.name}}" width="24" height="24"/></div>
-                     <h4 class="item-name {{#if (isItemBroken item)}}knave-encumbered{{/if}}">{{item.name}} <a class="item-quality" title="Quantity">{{#if (hasQuantity item)}}({{item.system.quantity}}){{/if}}&nbsp;&nbsp;</a></h4>
+                     <h4 class="item-name {{#if (isItemBroken item)}}vaarn-encumbered{{/if}}">{{item.name}} <a class="item-quality" title="Quantity">{{#if (hasQuantity item)}}({{item.system.quantity}}){{/if}}&nbsp;&nbsp;</a></h4>
                      </span>
                      <div class="item-controls">
                         

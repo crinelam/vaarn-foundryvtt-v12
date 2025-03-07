@@ -2,11 +2,11 @@
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
  */
-export class KnaveItemSheet extends ItemSheet {
+export class VaarnItemSheet extends ItemSheet {
   /** @override */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
-      classes: ["knave", "sheet", "item"],
+    return foundry.utils.mergeObject(super.defaultOptions, {
+      classes: ["vaarn", "sheet", "item"],
       width: 520,
       height: 480,
       tabs: [
